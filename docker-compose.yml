@@ -56,3 +56,10 @@ services:
     # Uncomment for SSL
     # environment:
     #  - MATTERMOST_ENABLE_SSL=true
+networks:
+  mm-bridge:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.19.0.1/24
+          gateway: 172.19.0.1
