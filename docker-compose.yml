@@ -6,6 +6,8 @@ services:
     build: db
     read_only: true
     restart: unless-stopped
+    networks:
+      - mm-bridge    
     volumes:
       - ./volumes/db/var/lib/postgresql/data:/var/lib/postgresql/data
       - /etc/localtime:/etc/localtime:ro
@@ -34,6 +36,10 @@ services:
       - ./volumes/app/mattermost/logs:/mattermost/logs:rw
       - ./volumes/app/mattermost/plugins:/mattermost/plugins:rw
       - /etc/localtime:/etc/localtime:ro
+    networks:
+      - mm-bridge  
+    # cap_add:
+    #   - IPC_LOCK      
     environment:
       # set same as db credentials and dbname
       - MM_USERNAME=mmuser
@@ -53,9 +59,11 @@ services:
       # This directory must have cert files if you want to enable SSL
       - ./volumes/web/cert:/cert:ro
       - /etc/localtime:/etc/localtime:ro
+    networks:
+      - mm-bridge          
     # Uncomment for SSL
-    # environment:
-    #  - MATTERMOST_ENABLE_SSL=true
+    environment:
+     - MATTERMOST_ENABLE_SSL=true
 networks:
   mm-bridge:
     driver: bridge
